@@ -21,7 +21,7 @@ import { NavigationProvider, useNavigation } from "@/hooks/use-navigation";
 import { useRouter } from "next/navigation";
 import { mockChildren } from "@/lib/mock-data";
 
-// Navigation model shared across desktop and mobile.
+// Navigation data types
 interface NavigationItem {
   id: string;
   label: string;
@@ -33,7 +33,7 @@ interface NavigationItem {
   children?: Array<NavigationItem>;
 }
 
-// Desktop navigation items.
+// Desktop nav items
 const navigationItems: Array<NavigationItem> = [
   {
     id: "home",
@@ -88,7 +88,7 @@ function UserCircle() {
   );
 }
 
-// Mobile tabs
+// Mobile nav items
 const mobileItems: Array<NavigationItem> = [
   {
     id: "tab1",
@@ -113,7 +113,7 @@ const mobileItems: Array<NavigationItem> = [
   },
 ];
 
-// Desktop Sidebar renders navigation and handles collapse state.
+// Desktop sidebar component
 export function DesktopSidebar() {
   const {
     activeItem,
@@ -125,7 +125,7 @@ export function DesktopSidebar() {
   } = useNavigation();
   const router = useRouter();
 
-  // Hide non-icon rows when collapsed.
+  // Only show items with icons when collapsed
   const visibleItems = useMemo(() => {
     if (isCollapsed) {
       return navigationItems.filter((item) => item.icon !== null);
@@ -133,7 +133,7 @@ export function DesktopSidebar() {
     return navigationItems;
   }, [isCollapsed]);
 
-  // Render one item (or child).
+  // Render navigation item
   const renderNavigationItem = (item: NavigationItem, isChild = false) => {
     const isActive = activeItem === item.id;
     const isExpanded = expandedSections.includes(item.id);
@@ -141,13 +141,13 @@ export function DesktopSidebar() {
     return (
       <div key={item.id}>
         <button
-          // Handle toggles and navigation.
+          // Handle clicks
           onClick={() => {
             if (item.isCollapsible && !isCollapsed) {
               toggleSection(item.id);
             } else if (!item.isCollapsible) {
               setActiveItem(item.id);
-              // Route mapping by id.
+              // Navigate based on item ID
               if (item.id === "home") {
                 router.push("/");
               } else if (item.id === "blocked-websites") {
@@ -284,7 +284,7 @@ export function DesktopSidebar() {
   );
 }
 
-// Mobile Tab Bar: compact selection control, decoupled from routing.
+// Mobile tab bar component
 export function MobileTabBar() {
   const { activeItem, setActiveItem } = useNavigation();
 
@@ -318,8 +318,7 @@ export function MobileTabBar() {
   );
 }
 
-// DashboardLayout: offsets content to avoid overlap with the sidebar. Margin
-// matches the live width of the sidebar for a consistent layout.
+// Main layout with sidebar offset
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { isCollapsed } = useNavigation();
 
@@ -334,8 +333,7 @@ function DashboardLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// ResponsiveNavigation: provides navigation state and composes desktop, mobile,
-// and content layout. This is the single integration point for navigation.
+// Main navigation wrapper component
 export function ResponsiveNavigation({
   children,
 }: {
