@@ -21,7 +21,7 @@ export function FeatureCards() {
   ];
 
   return (
-    <section className="border-t border-[#e0dedb] border-b border-[#e0dedb]">
+    <section className="border-t border-[#e0dedb] border-b">
       <div className="max-w-[1060px] mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-8">
           {features.map((feature, index) => (
